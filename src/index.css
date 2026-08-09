@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600;700&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #17181b;
+  --color-surface: #1f2023;
+  --color-surface-raised: #26272b;
+  --color-border: #34342f;
+  --color-paper: #f1eee6;
+  --color-paper-dim: #9c978a;
+  --color-amber: #d9a441;
+  --color-amber-dim: #a97e33;
+  --color-rust: #c15f3c;
+
+  --font-mono-catalog: "IBM Plex Mono", ui-monospace, monospace;
+  --font-sans-body: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans-body);
+}
+
+.font-catalog {
+  font-family: var(--font-mono-catalog);
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
