@@ -3,6 +3,8 @@ import type { ProductCategory } from "../types/Product";
 import { fetchProducts } from "../api/products";
 import { useFetch } from "../hooks/useFetch";
 import ProductCard from "../components/ProductCard";
+import Loader from "../components/Loader";
+import ErrorNotice from "../components/ErrorNotice";
 
 type CategoryFilter = ProductCategory | "all";
 
@@ -17,6 +19,7 @@ const FILTERS: { label: string; value: CategoryFilter }[] = [
 const Home = () => {
   const state = useFetch(fetchProducts, []);
   const addItem = () => {
+    //To add later
     console.log("Added");
   };
   const [filter, setFilter] = useState<CategoryFilter>("all");
@@ -55,8 +58,8 @@ const Home = () => {
         ))}
       </div>
 
-      {state.status === "loading" && <p>Loading...</p>}
-      {state.status === "error" && <p className="text-red-400">Error </p>}
+      {state.status === "loading" && <Loader />}
+      {state.status === "error" && <ErrorNotice message={state.error} />}
 
       {state.status === "success" && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
