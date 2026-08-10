@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
-  const totalCount = 5;
+  const { totalCount } = useCart();
   return (
-    <header className="border-b border-border bg-surface">
+    <header className="fixed top-0 left-0 right-0 h-16 border-b border-border bg-surface">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-baseline gap-2">
           <span className="text-lg font-semibold tracking-tight">

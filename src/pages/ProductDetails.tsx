@@ -3,12 +3,32 @@ import { useFetch } from "../hooks/useFetch";
 import { fetchProductById } from "../api/products";
 import Loader from "../components/Loader";
 import ErrorNotice from "../components/ErrorNotice";
+import { useCart } from "../context/CartContext";
+import { useRef, useState } from "react";
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
   const productId = Number(id);
 
   const state = useFetch(() => fetchProductById(productId), [productId]);
+
+  const { addItem } = useCart();
+
+  const [quntity, setQuantity] = useState(1);
+  const quantityInputRef = useRef<HTMLInputElement>(null);
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    setQuantity(Number.isNaN(value) || value < 1 ? 1 : value);
+  };
+
+  const handleAddToCart = () => {
+    if (state.status !== "success" || !state.data) return;
+    for (let i = 0; i < quntity; i++) {
+      addItem(state.data);
+    }
+    quantityInputRef.current?.select();
+  };
 
   if (state.status === "loading") return <Loader label="Loading item..." />;
   if (state.status === "error") return <ErrorNotice message={state.error} />;
@@ -19,7 +39,7 @@ const ProductDetails = () => {
   if (!product) return null;
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-10">
+    <div className="mt-16 mx-auto max-w-3xl px-6 py-10">
       <Link
         to="/"
         className="font-catalog mb-6 inline-block text-xs tracking-wider uppercase text-paper-dim hover:text-amber"
@@ -56,11 +76,18 @@ const ProductDetails = () => {
           {product.inStock ? (
             <div className="flex items-center gap-3">
               <input
+                ref={quantityInputRef}
                 type="number"
                 min={1}
+                value={quntity}
+                onChange={handleQuantityChange}
                 className="font-catalog w-16 rounded border border-border bg-surface px-2 py-2 text-center text-sm"
               />
-              <button className="font-catalog flex-1 rounded border border-amber py-2 text-shadow-2xs uppercase transition-colors hover:bg-amber hover:text-ink">
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className="font-catalog flex-1 rounded border border-amber py-2 text-shadow-2xs uppercase transition-colors hover:bg-amber hover:text-ink"
+              >
                 Add to cart
               </button>
             </div>

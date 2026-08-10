@@ -5,6 +5,7 @@ import { useFetch } from "../hooks/useFetch";
 import ProductCard from "../components/ProductCard";
 import Loader from "../components/Loader";
 import ErrorNotice from "../components/ErrorNotice";
+import { useCart } from "../context/CartContext";
 
 type CategoryFilter = ProductCategory | "all";
 
@@ -18,10 +19,7 @@ const FILTERS: { label: string; value: CategoryFilter }[] = [
 
 const Home = () => {
   const state = useFetch(fetchProducts, []);
-  const addItem = () => {
-    //To add later
-    console.log("Added");
-  };
+  const { addItem } = useCart();
   const [filter, setFilter] = useState<CategoryFilter>("all");
 
   const filteredProducts = useMemo(() => {
@@ -31,7 +29,7 @@ const Home = () => {
   }, [state, filter]);
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10">
+    <div className="mt-16 mx-auto max-w-5xl px-6 py-10">
       <div className="mb-8">
         <h1 className="text-2xl font-semibold tracking-tight">
           Field-tested gear
